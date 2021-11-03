@@ -184,7 +184,8 @@ def main(argv):
   options = [
     '--bind', f'{",".join(binds)}',
     '--env', 'TF_FORCE_UNIFIED_MEMORY=1',
-    '--env', 'XLA_PYTHON_CLIENT_MEM_FRACTION=4.0'
+    '--env', 'XLA_PYTHON_CLIENT_MEM_FRACTION=4.0',
+    '--env', 'OPENMM_CPU_THREADS=12'
   ]
 
   if FLAGS.use_gpu and FLAGS.gpu_devices:
