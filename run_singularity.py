@@ -188,8 +188,12 @@ def main(argv):
     '--env', 'OPENMM_CPU_THREADS=12'
   ]
 
-  if FLAGS.use_gpu and FLAGS.gpu_devices:
-    options.extend(['--env', f'NVIDIA_VISIBLE_DEVICES={FLAGS.gpu_devices}'])
+  if FLAGS.use_gpu:
+    if FLAGS.gpu_devices:
+      options.extend(['--env', f'NVIDIA_VISIBLE_DEVICES={FLAGS.gpu_devices}'])
+    elif os.environ['SLURM_JOB_GPUS']:
+      options.extend(['--env', f'NVIDIA_VISIBLE_DEVICES={os.environ["SLURM_JOB_GPUS"]}'])
+
 
   # result is a dict with keys "message" (value = all output as a single string), 
   # and "return_code" (value = integer return code)
