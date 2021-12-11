@@ -8,4 +8,7 @@ To use, first install the Python requirements:
 pip install -r requirements.txt
 ```
 
-Then, build the Singularity image.
+Then, build the Singularity image:
+```
+sudo singularity build alphafold.sif Singularity.def
+```
