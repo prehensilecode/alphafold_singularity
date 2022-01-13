@@ -6,7 +6,7 @@ This splits off my pull request https://github.com/deepmind/alphafold/pull/166
 ## Installation Instructions
 Check out this repo into the top of the alphafold source tree:
 ```
-$ cd singularity-v2.x.x
+$ cd alphafold-v2.x.x
 $ git clone https://github.com/prehensilecode/alphafold_singularity
 ```
 
