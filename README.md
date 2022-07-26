@@ -7,6 +7,10 @@ This splits off my pull request https://github.com/deepmind/alphafold/pull/166
 Basically, we have to modify the `Singularity.def` file which defines the Singularity/Apptainer 
 to match the Dockerfile provided by Alphafold.
 
+### Unfixed bug in Alphafold tagged release 2.2.2
+N.B. https://github.com/deepmind/alphafold/issues/510#issuecomment-1159062272
+
+### Build the Singularity image
 Check out this repo into the top of the alphafold source tree to a directory called `singularity`:
 ```
 $ cd alphafold-v2.x.x
