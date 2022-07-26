@@ -37,3 +37,13 @@ section marked `USER CONFIGURATION`. At the least, you will need to modify the v
 of:
 - `DOWNLOAD_DIR` - location where AlphaFold databases are downloaded
 - `singularity_image` - absolute path to the `alphafold.sif` Singularity image
+
+E.g.
+```
+#### USER CONFIGURATION ####
+# Set to target of scripts/download_all_databases.sh
+DOWNLOAD_DIR = os.environ['ALPHAFOLD_DATADIR']
+
+# AlphaFold Singularity image.
+singularity_image = Client.load(os.path.join(os.environ['ALPHAFOLD_DIR'], 'alphafold.sif'))
+```
