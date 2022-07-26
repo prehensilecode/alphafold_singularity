@@ -13,7 +13,7 @@ $ git clone https://github.com/prehensilecode/alphafold_singularity singularity
 
 To use, first install the Python requirements:
 ```
-$ pip install -r alphafold_singularity/requirements.txt
+$ pip install -r singularity/requirements.txt
 ```
 
 Then, build the Singularity image:
