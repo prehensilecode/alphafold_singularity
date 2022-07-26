@@ -5,7 +5,7 @@ This splits off my pull request https://github.com/deepmind/alphafold/pull/166
 
 ## Installation Instructions
 Basically, we have to modify the `Singularity.def` file which defines the Singularity/Apptainer 
-to match the Dockerfile.
+to match the Dockerfile provided by Alphafold.
 
 Check out this repo into the top of the alphafold source tree to a directory called `singularity`:
 ```
