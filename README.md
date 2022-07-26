@@ -4,6 +4,9 @@ Singularity recipe for AlphaFold, with example Slurm job script.
 This splits off my pull request https://github.com/deepmind/alphafold/pull/166
 
 ## Installation Instructions
+Basically, we have to modify the `Singularity.def` file which defines the Singularity/Apptainer 
+to match the Dockerfile.
+
 Check out this repo into the top of the alphafold source tree to a directory called `singularity`:
 ```
 $ cd alphafold-v2.x.x
