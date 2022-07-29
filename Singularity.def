@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: nvidia/cuda:11.0-cudnn8-runtime-ubuntu18.04
+From: nvidia/cuda:11.1.1-cudnn8-runtime-ubuntu18.04
 Stage: spython-base
 
 %files
@@ -25,7 +25,7 @@ Stage: spython-base
 apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
 build-essential \
 cmake \
-cuda-command-line-tools-11-0 \
+cuda-command-line-tools-11-1 \
 git \
 hmmer \
 kalign \
@@ -55,29 +55,37 @@ PATH="/opt/conda/bin:$PATH"
 conda update -qy conda \
 && conda install -y -c conda-forge \
 openmm=7.5.1 \
-cudatoolkit==11.0.3 \
+cudatoolkit==11.1.1 \
 pdbfixer \
 pip \
 python=3.7
+
+### /bin/cp -r . /app/alphafold
 
 wget -q -P /app/alphafold/alphafold/common/ \
 https://git.scicore.unibas.ch/schwede/openstructure/-/raw/7102c63615b64735c4941278d92b554ec94415f8/modules/mol/alg/src/stereo_chemical_props.txt
 
 # Install pip packages.
+# N.B. The URL specifies the list of jaxlib releases. The URL in alphafold release 2.2.2 is incorrect
+#      as it specifies the non-CUDA releases.
 pip3 install --upgrade pip \
 && pip3 install -r /app/alphafold/requirements.txt \
-&& pip3 install --upgrade jax jaxlib==0.1.69+cuda110 -f \
-https://storage.googleapis.com/jax-releases/jax_releases.html
+&& pip3 install --upgrade jax==0.2.14 jaxlib==0.1.69+cuda111 -f \
+https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
 # Apply OpenMM patch.
 cd /opt/conda/lib/python3.7/site-packages
 patch -p0 < /app/alphafold/docker/openmm.patch
 
+# Add SETUID bit to the ldconfig binary so that non-root users can run it.
+chmod u+s /sbin/ldconfig.real
+
 %environment
 export PATH="/opt/conda/bin:$PATH"
 %runscript
 cd /app/alphafold
+ldconfig
 exec python /app/alphafold/run_alphafold.py "$@"
-%startscript
-cd /app/alphafold
-exec python /app/alphafold/run_alphafold.py "$@"
+# %startscript
+# cd /app/alphafold
+# exec python /app/alphafold/run_alphafold.py "$@"
