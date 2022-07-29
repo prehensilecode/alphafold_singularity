@@ -22,21 +22,22 @@ from typing import Tuple
 from absl import app
 from absl import flags
 from absl import logging
+
+import tempfile
 from spython.main import Client
 
 #### USER CONFIGURATION ####
 
-# Set to target of scripts/download_all_databases.sh
-DATA_DIR = os.environ['ALPHAFOLD_DATADIR']
-
-# AlphaFold Singularity image.
+# Path to AlphaFold Singularity image. This relies on
+# the environment variable ALPHAFOLD_DIR which is the
+# directory where AlphaFold is installed.
 singularity_image = Client.load(os.path.join(os.environ['ALPHAFOLD_DIR'], 'alphafold.sif'))
 
 # Path to a directory that will store the results.
 if 'TMPDIR' in os.environ:
-  output_dir = os.environ['TMPDIR']
+    output_dir = os.environ['TMPDIR']
 else:
-  output_dir = tempfile.mkdtemp(dir='/tmp', prefix='alphafold-')
+    output_dir = tempfile.mkdtemp(dir='/tmp', prefix='alphafold-')
 
 #### END USER CONFIGURATION ####
 
