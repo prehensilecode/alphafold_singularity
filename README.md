@@ -35,15 +35,11 @@ environment variable](https://sylabs.io/guides/3.3/user-guide/build_env.html#tem
 To run, modify the `$ALPHAFOLD_SRC/singularity/run_singularity.py` and change the 
 section marked `USER CONFIGURATION`. At the least, you will need to modify the values
 of:
-- `DOWNLOAD_DIR` - location where AlphaFold databases are downloaded
 - `singularity_image` - absolute path to the `alphafold.sif` Singularity image
 
 E.g.
 ```
 #### USER CONFIGURATION ####
-# Set to target of scripts/download_all_databases.sh
-DOWNLOAD_DIR = os.environ['ALPHAFOLD_DATADIR']
-
 # AlphaFold Singularity image.
 singularity_image = Client.load(os.path.join(os.environ['ALPHAFOLD_DIR'], 'alphafold.sif'))
 ```
