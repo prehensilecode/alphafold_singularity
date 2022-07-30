@@ -26,7 +26,7 @@ $ pip install -r singularity/requirements.txt
 
 Then, build the Singularity image:
 ```
-sudo singularity build alphafold.sif singularity/Singularity.def
+$ sudo singularity build alphafold.sif singularity/Singularity.def
 ```
 
 If your `/tmp` directory is small, you may need to set the [`SINGULARITY_TMPDIR`
