@@ -3,13 +3,14 @@ Singularity recipe for AlphaFold, with example Slurm job script.
 
 This splits off my pull request https://github.com/deepmind/alphafold/pull/166
 
-## Installation Instructions
-Basically, we have to modify the `Singularity.def` file which defines the Singularity/Apptainer 
-to match the Dockerfile provided by Alphafold.
-
 ### Unfixed bug in Alphafold tagged release 2.2.2
 N.B. https://github.com/deepmind/alphafold/issues/510#issuecomment-1159062272
 
+## What This Code Contains
+* `Singularity.def` which is the recipe to build the Singularity image. This is a port of the Dockerfile provided by AlphaFold.
+* `run_singularity.py` which is a port of the `run_docker.py` script provided by AlphaFold. It is a wrapper to provide a friendly interface for running the container.
+
+## Installation Instructions
 ### Build the Singularity image
 Check out this repo into the top of the alphafold source tree to a directory called `singularity`:
 ```
