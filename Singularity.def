@@ -22,7 +22,7 @@ Stage: spython-base
 # FROM directive resets ARGS, so we specify again (the value is retained if
 # previously set).
 
-apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
 build-essential \
 cmake \
 cuda-command-line-tools-11-1 \
@@ -31,7 +31,9 @@ hmmer \
 kalign \
 tzdata \
 wget \
-&& rm -rf /var/lib/apt/lists/*
+&& rm -rf /var/lib/apt/lists/* \
+&& apt-get autoremove -y \
+&& apt-get clean
 
 # Compile HHsuite from source.
 /bin/rm -rf /tmp/hh-suite \
@@ -52,13 +54,14 @@ https://repo.anaconda.com/miniconda/Miniconda3-py37_4.12.0-Linux-x86_64.sh \
 
 # Install conda packages.
 PATH="/opt/conda/bin:/usr/local/cuda-11.1/bin:$PATH"
-conda update -qy conda \
+conda install -qy conda==4.13.0 \
 && conda install -y -c conda-forge \
 openmm=7.5.1 \
 cudatoolkit==11.1.1 \
 pdbfixer \
 pip \
-python=3.7
+python=3.7 \
+&& conda clean --all --force-pkgs-dirs --yes
 
 ### /bin/cp -r . /app/alphafold
 
@@ -66,12 +69,13 @@ wget -q -P /app/alphafold/alphafold/common/ \
 https://git.scicore.unibas.ch/schwede/openstructure/-/raw/7102c63615b64735c4941278d92b554ec94415f8/modules/mol/alg/src/stereo_chemical_props.txt
 
 # Install pip packages.
-# N.B. The URL specifies the list of jaxlib releases. The URL in alphafold release 2.2.2 is incorrect
-#      as it specifies the non-CUDA releases.
-pip3 install --upgrade pip \
-&& pip3 install -r /app/alphafold/requirements.txt \
-&& pip3 install --upgrade jax==0.2.14 jaxlib==0.1.69+cuda111 -f \
-https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+# N.B. The URL specifies the list of jaxlib releases.
+pip3 install --upgrade pip  --no-cache-dir \
+&& pip3 install -r /app/alphafold/requirements.txt --no-cache-dir \
+&& pip3 install --upgrade --no-cache-dir \
+jax==0.3.17 \
+jaxlib==0.3.15+cuda11.cudnn805 \
+-f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
 # Apply OpenMM patch.
 cd /opt/conda/lib/python3.7/site-packages
