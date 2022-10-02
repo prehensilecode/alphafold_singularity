@@ -3,6 +3,8 @@ Singularity recipe for AlphaFold, with example Slurm job script.
 
 This splits off my pull request https://github.com/deepmind/alphafold/pull/166
 
+Disclaimer: this project is not affiliated with DeepMind.
+
 ### Unfixed bug in Alphafold tagged release 2.2.2
 N.B. https://github.com/deepmind/alphafold/issues/510#issuecomment-1159062272
 
