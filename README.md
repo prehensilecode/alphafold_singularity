@@ -1,5 +1,5 @@
 # alphafold_singularity
-Singularity recipe for AlphaFold, with example Slurm job script.
+Singularity recipe for [AlphaFold](https://github.com/deepmind/alphafold/), with example Slurm job script.
 
 This splits off my pull request https://github.com/deepmind/alphafold/pull/166
 
