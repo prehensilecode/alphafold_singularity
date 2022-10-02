@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-gpu=12
 #SBATCH --mem=140G
 
-module load alphafold/2.2.2
+module load alphafold/2.2.4
 module load python/gcc/3.10
 
 ### Check values of some environment variables
