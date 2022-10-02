@@ -50,3 +50,6 @@ E.g.
 # AlphaFold Singularity image.
 singularity_image = Client.load(os.path.join(os.environ['ALPHAFOLD_DIR'], 'alphafold.sif'))
 ```
+
+### Run as a Slurm job on a cluster
+See the example job script [`example_slurm_job.sh`](https://github.com/prehensilecode/alphafold_singularity/blob/main/example_slurm_job.sh)
