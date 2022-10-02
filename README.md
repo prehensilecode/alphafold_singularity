@@ -36,6 +36,7 @@ $ sudo singularity build alphafold.sif singularity/Singularity.def
 
 If your `/tmp` directory is small, you may need to set the [`SINGULARITY_TMPDIR`
 environment variable](https://sylabs.io/guides/3.3/user-guide/build_env.html#temporary-folders) to a directory on a filesystem with more free space.
+My builds have consumed up to 15 GiB of space. The resulting image file may be up to 10 GiB.
 
 ### Install and run
 To run, modify the `$ALPHAFOLD_SRC/singularity/run_singularity.py` and change the 
