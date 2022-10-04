@@ -12,7 +12,7 @@ N.B. https://github.com/deepmind/alphafold/issues/510#issuecomment-1159062272
 A prebuilt image is hosted on cloud.sylabs.io: [https://cloud.sylabs.io/library/prehensilecode/alphafold_singularity/alphafold](https://cloud.sylabs.io/library/prehensilecode/alphafold_singularity/alphafold)
 
 ## What This Code Contains
-* `Singularity.def` which is the recipe to build the Singularity image. This is a port of the Dockerfile provided by AlphaFold.
+* `Singularity.def` which is the recipe to build the Singularity image. This is a port of the [Dockerfile](https://github.com/deepmind/alphafold/blob/main/docker/Dockerfile) provided by AlphaFold.
 * `run_singularity.py` which is a port of the [`run_docker.py`](https://github.com/deepmind/alphafold/blob/main/docker/run_docker.py) script provided by AlphaFold. It is a wrapper to provide a friendly interface for running the container.
 
 ## Installation Instructions
