@@ -23,7 +23,7 @@ N.B. The AlphaFold version and the alphafold_singularity versions must match.
 $ export ALPHAFOLD_VERSION=2.2.4
 $ wget https://github.com/deepmind/alphafold/archive/refs/tags/v${ALPHAFOLD_VERSION}.tar.gz -O alphafold-${ALPHAFOLD_VERSION}.tar.gz
 ...
-2023-02-08 17:28:50 (1.24 MB/s) - ‘alphafold-2.2.4.tar.gz’ saved [5855095]
+2023-02-08 17:28:50 (1.24 MB/s) - ‘alphafold-x.x.x.tar.gz’ saved [5855095]
 $ tar -xvf alphafold-${ALPHAFOLD_VERSION}.tar.gz
 $ cd alphafold-${ALPHAFOLD_VERSION}
 $ wget https://github.com/prehensilecode/alphafold_singularity/archive/refs/tags/v${ALPHAFOLD_VERSION}.tar.gz -O alphafold_singularity-${ALPHAFOLD_VERSION}.tar.gz
