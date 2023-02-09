@@ -16,15 +16,25 @@ A prebuilt image is hosted on cloud.sylabs.io: [https://cloud.sylabs.io/library/
 * `run_singularity.py` which is a port of the [`run_docker.py`](https://github.com/deepmind/alphafold/blob/main/docker/run_docker.py) script provided by AlphaFold. It is a wrapper to provide a friendly interface for running the container.
 
 ## Installation Instructions
+### Download AlphaFold and alphafold_singularity:
+```
+$ export ALPHAFOLD_VERSION=2.2.4
+$ wget https://github.com/deepmind/alphafold/archive/refs/tags/v${ALPHAFOLD_VERSION}.tar.gz -O alphafold-${ALPHAFOLD_VERSION}.tar.gz
+...
+2023-02-08 17:28:50 (1.24 MB/s) - ‘alphafold-2.2.4.tar.gz’ saved [5855095]
+$ tar -xvf alphafold-${ALPHAFOLD_VERSION}.tar.gz
+$ cd alphafold-${ALPHAFOLD_VERSION}
+$ wget https://github.com/prehensilecode/alphafold_singularity/archive/refs/tags/v${ALPHAFOLD_VERSION}.tar.gz -O alphafold_singularity-${ALPHAFOLD_VERSION}.tar.gz
+...
+2023-02-08 17:42:18 (1.58 MB/s) - ‘alphafold_singularity-x.x.x.tar.gz’ saved [10148]
+$ tar -xf alphafold_singularity-${ALPHAFOLD_VERSION}.tar.gz
+$ mv alphafold_singularity-${ALPHAFOLD_VERSION} singularity
+$ python3 -m pip install -r singularity/requirements.txt
+$ sudo singularity build alphafold.sif singularity/Singularity.def
+```
+
 ### Build the Singularity image
-Check out this repo into the top of the alphafold source tree to a directory called `singularity`:
-```
-$ cd alphafold-v2.x.x
-$ git clone https://github.com/prehensilecode/alphafold_singularity singularity
-
-```
-
-To use, first install the Python requirements:
+First install the Python requirements:
 ```
 $ python3 -m pip install -r singularity/requirements.txt
 ```
