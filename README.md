@@ -17,6 +17,8 @@ A prebuilt image is hosted on cloud.sylabs.io: [https://cloud.sylabs.io/library/
 
 ## Installation Instructions
 ### Download AlphaFold and alphafold_singularity:
+N.B. The AlphaFold version and the alphafold_singularity versions must match.
+
 ```
 $ export ALPHAFOLD_VERSION=2.2.4
 $ wget https://github.com/deepmind/alphafold/archive/refs/tags/v${ALPHAFOLD_VERSION}.tar.gz -O alphafold-${ALPHAFOLD_VERSION}.tar.gz
