@@ -5,6 +5,9 @@
 #SBATCH --cpus-per-gpu=12
 #SBATCH --mem=140G
 
+### NOTE
+### This job script cannot be used without modification for your specific environment.
+
 module load alphafold/2.2.4
 module load python/gcc/3.10
 
