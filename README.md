@@ -60,6 +60,8 @@ See [AlphaFold 2.3.1 README](https://github.com/deepmind/alphafold/tree/v2.3.1)
 for instructions on downloading genetic databases. These are necessary
 to run AlphaFold.
 
+This step requires [aria2c](https://aria2.github.io/).
+
 ### Modify run script, install, and run
 To run, modify the `$ALPHAFOLD_SRC/singularity/run_singularity.py` and change the 
 section marked `USER CONFIGURATION`. At the least, you will need to modify the values
