@@ -25,7 +25,7 @@ A prebuilt image is hosted on cloud.sylabs.io: [https://cloud.sylabs.io/library/
 N.B. The AlphaFold version and the alphafold_singularity versions must match.
 
 ```
-$ export ALPHAFOLD_VERSION=2.2.4
+$ export ALPHAFOLD_VERSION=2.3.1
 $ wget https://github.com/deepmind/alphafold/archive/refs/tags/v${ALPHAFOLD_VERSION}.tar.gz -O alphafold-${ALPHAFOLD_VERSION}.tar.gz
 ...
 2023-02-08 17:28:50 (1.24 MB/s) - ‘alphafold-x.x.x.tar.gz’ saved [5855095]
@@ -55,7 +55,12 @@ If your `/tmp` directory is small, you may need to set the [`SINGULARITY_TMPDIR`
 environment variable](https://sylabs.io/guides/3.3/user-guide/build_env.html#temporary-folders) to a directory on a filesystem with more free space.
 My builds have consumed up to 15 GiB of space. The resulting image file may be up to 10 GiB.
 
-### Install and run
+### Download genetic databases
+See [AlphaFold 2.3.1 README](https://github.com/deepmind/alphafold/tree/v2.3.1) 
+for instructions on downloading genetic databases. These are necessary
+to run AlphaFold.
+
+### Modify run script, install, and run
 To run, modify the `$ALPHAFOLD_SRC/singularity/run_singularity.py` and change the 
 section marked `USER CONFIGURATION`. At the least, you will need to modify the values
 of:
@@ -69,4 +74,6 @@ singularity_image = Client.load(os.path.join(os.environ['ALPHAFOLD_DIR'], 'alpha
 ```
 
 ### Run as a Slurm job on a cluster
-See the example job script [`example_slurm_job.sh`](https://github.com/prehensilecode/alphafold_singularity/blob/main/example_slurm_job.sh)
+See the example job script [`example_slurm_job.sh`](https://github.com/prehensilecode/alphafold_singularity/blob/main/example_slurm_job.sh). 
+N.B. this example must be modified to suit your specific HPC environment.
+
