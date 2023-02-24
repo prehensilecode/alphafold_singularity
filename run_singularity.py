@@ -34,10 +34,15 @@ from spython.main import Client
 singularity_image = Client.load(os.path.join(os.environ['ALPHAFOLD_DIR'], 'alphafold.sif'))
 
 # Path to a directory that will store the results.
-if 'TMPDIR' in os.environ:
+if 'TMP' in os.environ:
+    output_dir = os.environ['TMP']
+elif 'TMPDIR' in os.environ:
     output_dir = os.environ['TMPDIR']
 else:
     output_dir = tempfile.mkdtemp(dir='/tmp', prefix='alphafold-')
+
+# set tmp dir the same as output dir
+tmp_dir = output_dir
 
 #### END USER CONFIGURATION ####
 
@@ -62,7 +67,7 @@ flags.DEFINE_list(
     'separated by commas. All FASTA paths must have a unique basename as the '
     'basename is used to name the output directories for each prediction.')
 flags.DEFINE_string(
-    'output_dir', '/tmp/alphafold',
+    'output_dir', output_dir,
     'Path to a directory that will store the results.')
 flags.DEFINE_string(
     'data_dir', None,
@@ -113,6 +118,7 @@ _ROOT_MOUNT_DIRECTORY = '/mnt/'
 
 
 def _create_bind(bind_name: str, path: str) -> Tuple[str, str]:
+  """Create a bind point for each file and directory used by the model."""
   path = os.path.abspath(path)
   source_path = os.path.dirname(path) if bind_name != 'data_dir' else path
   target_path = os.path.join(_ROOT_MOUNT_DIRECTORY, bind_name)
@@ -145,7 +151,7 @@ def main(argv):
 
   # Path to the MGnify database for use by JackHMMER.
   mgnify_database_path = os.path.join(
-      FLAGS.data_dir, 'mgnify', 'mgy_clusters_2018_12.fa')
+      FLAGS.data_dir, 'mgnify', 'mgy_clusters_2022_05.fa')
 
   # Path to the BFD database for use by HHblits.
   bfd_database_path = os.path.join(
@@ -156,9 +162,9 @@ def main(argv):
   small_bfd_database_path = os.path.join(
       FLAGS.data_dir, 'small_bfd', 'bfd-first_non_consensus_sequences.fasta')
 
-  # Path to the Uniclust30 database for use by HHblits.
-  uniclust30_database_path = os.path.join(
-      FLAGS.data_dir, 'uniclust30', 'uniclust30_2018_08', 'uniclust30_2018_08')
+  # Path to the Uniref30 database for use by HHblits.
+  uniref30_database_path = os.path.join(
+      FLAGS.data_dir, 'uniref30', 'UniRef30_2021_03')
 
   # Path to the PDB70 database for use by HHsearch.
   pdb70_database_path = os.path.join(FLAGS.data_dir, 'pdb70', 'pdb70')
@@ -178,7 +184,7 @@ def main(argv):
   if alphafold_path == data_dir_path or alphafold_path in data_dir_path.parents:
     raise app.UsageError(
         f'The download directory {FLAGS.data_dir} should not be a subdirectory '
-        f'in the AlphaFold repository directory. If it is, the Docker build is '
+        f'in the AlphaFold repository directory. If it is, the Singularity build is '
         f'slow since the large databases are copied during the image creation.')
 
   binds = []
@@ -211,7 +217,7 @@ def main(argv):
     database_paths.append(('small_bfd_database_path', small_bfd_database_path))
   else:
     database_paths.extend([
-        ('uniclust30_database_path', uniclust30_database_path),
+        ('uniref30_database_path', uniref30_database_path),
         ('bfd_database_path', bfd_database_path),
     ])
   for name, path in database_paths:
@@ -222,6 +228,11 @@ def main(argv):
 
   output_target_path = os.path.join(_ROOT_MOUNT_DIRECTORY, 'output')
   binds.append(f'{output_dir}:{output_target_path}')
+  logging.info('Binding %s -> %s', output_dir, output_target_path)
+
+  tmp_target_path = '/tmp'
+  binds.append(f'{tmp_dir}:{tmp_target_path}')
+  logging.info('Binding %s -> %s', tmp_dir, tmp_target_path)
 
   use_gpu_relax = FLAGS.enable_gpu_relax and FLAGS.use_gpu
 
@@ -240,9 +251,11 @@ def main(argv):
 
   options = [
     '--bind', f'{",".join(binds)}',
+    '--env', 'OPENMM_CPU_THREADS=12',
+    # The following flags allow us to make predictions on proteins that
+    # would typically be too long to fit into GPU memory.
     '--env', 'TF_FORCE_UNIFIED_MEMORY=1',
     '--env', 'XLA_PYTHON_CLIENT_MEM_FRACTION=4.0',
-    '--env', 'OPENMM_CPU_THREADS=12'
   ]
 
   # Run the container.
