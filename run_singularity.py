@@ -15,6 +15,7 @@
 """Singularity launch script for Alphafold Singularity image."""
 
 import os
+import sys
 import pathlib
 import signal
 from typing import Tuple
@@ -25,6 +26,15 @@ from absl import logging
 
 import tempfile
 from spython.main import Client
+
+# Check Slurm environment if available
+if os.environ['SLURM_GPUS_ON_NODE']:
+    ngpus_requested = int(os.environ['SLURM_GPUS_ON_NODE'])
+    if ngpus_requested > 1:
+        logging.fatal(f'No. of GPUs requested is > 1: {ngpus_requested}')
+        # absl.logging.fatal() does not terminate this process
+        # so, manually call sys.exit()
+        sys.exit(1)
 
 #### USER CONFIGURATION ####
 
