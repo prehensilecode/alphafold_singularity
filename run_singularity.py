@@ -23,18 +23,11 @@ from typing import Tuple
 from absl import app
 from absl import flags
 from absl import logging
-
-import tempfile
 from spython.main import Client
 
-# Check Slurm environment if available
-if os.environ['SLURM_GPUS_ON_NODE']:
-    ngpus_requested = int(os.environ['SLURM_GPUS_ON_NODE'])
-    if ngpus_requested > 1:
-        logging.fatal(f'No. of GPUs requested is > 1: {ngpus_requested}')
-        # absl.logging.fatal() does not terminate this process
-        # so, manually call sys.exit()
-        sys.exit(1)
+import tempfile
+import subprocess
+
 
 #### USER CONFIGURATION ####
 
@@ -147,6 +140,21 @@ def _create_bind(bind_name: str, path: str) -> Tuple[str, str]:
 def main(argv):
   if len(argv) > 1:
     raise app.UsageError('Too many command-line arguments.')
+
+  # Using more than one GPU causes TensorFold's amber_minimize.py to fail
+  # See: https://github.com/prehensilecode/alphafold_singularity/issues/25
+  ngpus_requested = 0
+
+  # Check Slurm environment if available
+  if os.environ['SLURM_GPUS_ON_NODE']:
+    ngpus_requested = int(os.environ['SLURM_GPUS_ON_NODE'])
+  else:
+    # use nvidia-smi to count GPUs 
+    # this works if using cgroups but may not work otherwise
+    ngpus_requested = len(subprocess.run(['nvidia-smi', '-L'], check=True, capture_output=True, text=True).stdout.strip().split('\n'))
+
+  if ngpus_requested > 1:
+    logging.fatal(f'No. of GPUs requested is > 1: {ngpus_requested}')
 
   # You can individually override the following paths if you have placed the
   # data in locations other than the FLAGS.data_dir.
