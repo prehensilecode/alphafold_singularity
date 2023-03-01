@@ -12,7 +12,6 @@ module load python/gcc/3.11
 module load alphafold/2.3.1
 
 ### Check values of some environment variables
-echo SLURM_GPUS_ON_NODE=$SLURM_GPUS_ON_NODE
 echo ALPHAFOLD_DIR=$ALPHAFOLD_DIR
 echo ALPHAFOLD_DATADIR=$ALPHAFOLD_DATADIR
 
