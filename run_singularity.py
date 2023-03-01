@@ -141,21 +141,6 @@ def main(argv):
   if len(argv) > 1:
     raise app.UsageError('Too many command-line arguments.')
 
-  # Using more than one GPU causes TensorFold's amber_minimize.py to fail
-  # See: https://github.com/prehensilecode/alphafold_singularity/issues/25
-  ngpus_requested = 0
-
-  # Check Slurm environment if available
-  if os.environ['SLURM_GPUS_ON_NODE']:
-    ngpus_requested = int(os.environ['SLURM_GPUS_ON_NODE'])
-  else:
-    # use nvidia-smi to count GPUs 
-    # this works if using cgroups but may not work otherwise
-    ngpus_requested = len(subprocess.run(['nvidia-smi', '-L'], check=True, capture_output=True, text=True).stdout.strip().split('\n'))
-
-  if ngpus_requested > 1:
-    logging.fatal(f'No. of GPUs requested is > 1: {ngpus_requested}')
-
   # You can individually override the following paths if you have placed the
   # data in locations other than the FLAGS.data_dir.
 
@@ -269,7 +254,7 @@ def main(argv):
 
   options = [
     '--bind', f'{",".join(binds)}',
-    '--env', 'OPENMM_CPU_THREADS=12',
+    '--env', f'NVIDIA_VISIBLE_DEVICES={FLAGS.gpu_devices}',
     # The following flags allow us to make predictions on proteins that
     # would typically be too long to fit into GPU memory.
     '--env', 'TF_FORCE_UNIFIED_MEMORY=1',
