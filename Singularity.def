@@ -48,9 +48,9 @@ wget \
 
 # Install Miniconda package manager.
 wget -q -P /tmp \
-https://repo.anaconda.com/miniconda/Miniconda3-py37_4.12.0-Linux-x86_64.sh \
-&& bash /tmp/Miniconda3-py37_4.12.0-Linux-x86_64.sh -b -p /opt/conda \
-&& rm /tmp/Miniconda3-py37_4.12.0-Linux-x86_64.sh
+https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+&& bash /tmp/Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda \
+&& rm /tmp/Miniconda3-latest-Linux-x86_64.sh
 
 # Install conda packages.
 PATH="/opt/conda/bin:/usr/local/cuda-11.1/bin:$PATH"
@@ -60,7 +60,7 @@ openmm=7.5.1 \
 cudatoolkit==11.1.1 \
 pdbfixer \
 pip \
-python=3.7 \
+python=3.8 \
 && conda clean --all --force-pkgs-dirs --yes
 
 ### /bin/cp -r . /app/alphafold
@@ -73,22 +73,25 @@ https://git.scicore.unibas.ch/schwede/openstructure/-/raw/7102c63615b64735c49412
 pip3 install --upgrade pip  --no-cache-dir \
 && pip3 install -r /app/alphafold/requirements.txt --no-cache-dir \
 && pip3 install --upgrade --no-cache-dir \
-jax==0.3.17 \
-jaxlib==0.3.15+cuda11.cudnn805 \
+jax==0.3.25 \
+jaxlib==0.3.25+cuda11.cudnn805 \
 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 
 # Apply OpenMM patch.
-cd /opt/conda/lib/python3.7/site-packages
+cd /opt/conda/lib/python3.8/site-packages
 patch -p0 < /app/alphafold/docker/openmm.patch
 
 # Add SETUID bit to the ldconfig binary so that non-root users can run it.
 chmod u+s /sbin/ldconfig.real
 
+### SETUID bit does not matter: Apptainer does not allow suid commands
+### Workaround below is to use /mnt/out/ld.so.cache for the ld cache file
+
 %environment
 export PATH="/opt/conda/bin:/usr/local/cuda-11.1/bin:$PATH"
 %runscript
 cd /app/alphafold
-ldconfig
+ldconfig -C /mnt/output/ld.so.cache
 exec python /app/alphafold/run_alphafold.py "$@"
 # %startscript
 # cd /app/alphafold
