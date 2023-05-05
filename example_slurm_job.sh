@@ -25,9 +25,13 @@ echo ALPHAFOLD_DATADIR=$ALPHAFOLD_DATADIR
 #   --model_preset=monomer_casp14
 #   --db_preset=full_dbs (or delete the line; default is "full_dbs")
 #
+# On a test system with 4x Tesla V100-SXM2, this took about 50 minutes.
+#
 # To benchmark, running multiple JAX model evaluations (NB this 
 # significantly increases run time):
 #   --benchmark
+#
+# On a test system with 4x Tesla V100-SXM2, this took about 6 hours.
 
 # Run AlphaFold; default is to use GPUs
 python3 ${ALPHAFOLD_DIR}/singularity/run_singularity.py \
