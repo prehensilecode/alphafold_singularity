@@ -3,7 +3,7 @@
 #SBATCH --time=2:00:00
 #SBATCH --gpus=4
 #SBATCH --cpus-per-gpu=12
-#SBATCH --mem=140G
+#SBATCH --mem=45G
 
 ### NOTE
 #### This job script cannot be used without modification for your specific environment.
@@ -23,17 +23,16 @@ echo ALPHAFOLD_DATADIR=$ALPHAFOLD_DATADIR
 ###
 
 # AlphaFold should use all GPU devices available to the job by default.
-# To explicitly specify use of GPUs, and the GPU devices to use, add
-#   --use_gpu --gpu_devices=${SLURM_JOB_GPUS}
 #
 # To run the CASP14 evaluation, use:
 #   --model_preset=monomer_casp14
+#   --db_preset=full_dbs (or delete the line; default is "full_dbs")
 #
 # To benchmark, running multiple JAX model evaluations (NB this 
 # significantly increases run time):
 #   --benchmark
 
-# Run AlphaFold; default is to use GPUs, i.e. "--use_gpu" can be omitted.
+# Run AlphaFold; default is to use GPUs
 python3 ${ALPHAFOLD_DIR}/singularity/run_singularity.py \
     --use_gpu \
     --data_dir=${ALPHAFOLD_DATADIR} \

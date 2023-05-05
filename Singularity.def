@@ -22,7 +22,8 @@ Stage: spython-base
 # FROM directive resets ARGS, so we specify again (the value is retained if
 # previously set).
 
-apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
+apt-get update \
+&& DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
 build-essential \
 cmake \
 cuda-command-line-tools-11-1 \
