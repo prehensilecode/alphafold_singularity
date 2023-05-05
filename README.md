@@ -25,7 +25,7 @@ A prebuilt image is hosted on cloud.sylabs.io: [https://cloud.sylabs.io/library/
 N.B. The AlphaFold version and the alphafold_singularity versions must match.
 
 ```
-$ export ALPHAFOLD_VERSION=2.3.1
+$ export ALPHAFOLD_VERSION=2.3.2
 $ wget https://github.com/deepmind/alphafold/archive/refs/tags/v${ALPHAFOLD_VERSION}.tar.gz -O alphafold-${ALPHAFOLD_VERSION}.tar.gz
 ...
 2023-02-08 17:28:50 (1.24 MB/s) - ‘alphafold-x.x.x.tar.gz’ saved [5855095]
@@ -56,7 +56,7 @@ environment variable](https://sylabs.io/guides/3.3/user-guide/build_env.html#tem
 My builds have consumed up to 15 GiB of space. The resulting image file may be up to 10 GiB.
 
 ### Download genetic databases
-See [AlphaFold 2.3.1 README](https://github.com/deepmind/alphafold/tree/v2.3.1) 
+See [AlphaFold 2.3.2 README](https://github.com/deepmind/alphafold/tree/v2.3.2) 
 for instructions on downloading genetic databases. These are necessary
 to run AlphaFold.
 
