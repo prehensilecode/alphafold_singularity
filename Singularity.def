@@ -85,11 +85,14 @@ patch -p0 < /app/alphafold/docker/openmm.patch
 # Add SETUID bit to the ldconfig binary so that non-root users can run it.
 chmod u+s /sbin/ldconfig.real
 
+### SETUID bit does not matter: Apptainer does not allow suid commands
+### Workaround below is to use /mnt/out/ld.so.cache for the ld cache file
+
 %environment
 export PATH="/opt/conda/bin:/usr/local/cuda-11.1/bin:$PATH"
 %runscript
 cd /app/alphafold
-ldconfig
+ldconfig -C /mnt/output/ld.so.cache
 exec python /app/alphafold/run_alphafold.py "$@"
 # %startscript
 # cd /app/alphafold
