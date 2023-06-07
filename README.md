@@ -27,7 +27,7 @@ except for the bugfix number in alphafold_singularity. E.g. alphafold_singularit
 goes with AlphaFold 2.3.2
 
 ```
-$ export ALPHAFOLD_VERSION=2.3.2-1
+$ export ALPHAFOLD_VERSION=2.3.2
 $ wget https://github.com/deepmind/alphafold/archive/refs/tags/v${ALPHAFOLD_VERSION}.tar.gz -O alphafold-${ALPHAFOLD_VERSION}.tar.gz
 ...
 2023-02-08 17:28:50 (1.24 MB/s) - ‘alphafold-x.x.x.tar.gz’ saved [5855095]
