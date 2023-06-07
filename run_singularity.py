@@ -36,20 +36,23 @@ import subprocess
 # directory where AlphaFold is installed.
 singularity_image = Client.load(os.path.join(os.environ['ALPHAFOLD_DIR'], 'alphafold.sif'))
 
-# Path to a directory that will store the results.
+# tmp directory
 if 'TMP' in os.environ:
-    output_dir = os.environ['TMP']
+    tmp_dir = os.environ['TMP']
 elif 'TMPDIR' in os.environ:
-    output_dir = os.environ['TMPDIR']
+    tmp_dir = os.environ['TMPDIR']
 else:
-    output_dir = tempfile.mkdtemp(dir='/tmp', prefix='alphafold-')
+    tmp_dir = '/tmp'
 
-# set tmp dir the same as output dir
-tmp_dir = output_dir
+# Default path to a directory that will store the results.
+output_dir_default = tempfile.mkdtemp(dir=tmp_dir, prefix='alphafold')
+
+logging.info(f'INFO: tmp_dir = {tmp_dir}')
+logging.info(f'INFO: output_dir_default = {output_dir_default}')
 
 #### END USER CONFIGURATION ####
 
-
+### These flags correspond to the flags defined in ../run_alphafold.py
 flags.DEFINE_bool(
     'use_gpu', True, 'Enable NVIDIA runtime to run with GPUs.')
 flags.DEFINE_enum(
@@ -74,7 +77,7 @@ flags.DEFINE_list(
     'separated by commas. All FASTA paths must have a unique basename as the '
     'basename is used to name the output directories for each prediction.')
 flags.DEFINE_string(
-    'output_dir', output_dir,
+    'output_dir', output_dir_default,
     'Path to a directory that will store the results.')
 flags.DEFINE_string(
     'data_dir', None,
@@ -227,6 +230,10 @@ def main(argv):
         ('uniref30_database_path', uniref30_database_path),
         ('bfd_database_path', bfd_database_path),
     ])
+
+  # NB for binds:
+  #    - first arg = path on host
+  #    - second arg = path in container
   for name, path in database_paths:
     if path:
       bind, target_path = _create_bind(name, path)
@@ -234,8 +241,8 @@ def main(argv):
       command_args.append(f'--{name}={target_path}')
 
   output_target_path = os.path.join(_ROOT_MOUNT_DIRECTORY, 'output')
-  binds.append(f'{output_dir}:{output_target_path}')
-  logging.info('Binding %s -> %s', output_dir, output_target_path)
+  binds.append(f'{FLAGS.output_dir}:{output_target_path}')
+  logging.info('Binding %s -> %s', FLAGS.output_dir, output_target_path)
 
   tmp_target_path = '/tmp'
   binds.append(f'{tmp_dir}:{tmp_target_path}')
