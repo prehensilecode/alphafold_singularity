@@ -8,7 +8,7 @@ Disclaimer: this project is not affiliated with DeepMind.
 ## IMPORTANT - `main` branch not usable directly
 The `main` branch here is not directly usable with the `main` branch of AlphaFold. This Singularity recipe
 works only with the matching release of AlphaFold. Please use one of the releases here, with a matching
-release of AlphaFold.
+release of AlphaFold (ignoring the bugfix number).
 
 ### Unfixed bug in Alphafold tagged release 2.2.2
 N.B. https://github.com/deepmind/alphafold/issues/510#issuecomment-1159062272
