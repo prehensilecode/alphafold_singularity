@@ -1,4 +1,7 @@
 # alphafold_singularity
+
+'''NOTICE: THIS CODEBASE IS NOT ACTIVELY MAINTAINTED; NO ISSUES WILL BE ADDRESSED'''
+
 Singularity recipe for [AlphaFold](https://github.com/deepmind/alphafold/), with example Slurm job script.
 
 This splits off my pull request https://github.com/deepmind/alphafold/pull/166
